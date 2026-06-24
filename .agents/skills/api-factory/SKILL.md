@@ -1,0 +1,258 @@
+---
+name: api-factory
+description: >
+  End-to-end workflow for building, testing, deploying, and listing a monetized
+  API on RapidAPI. Takes a domain/niche and produces a live, revenue-generating
+  API listing in under 2 hours. Uses FastAPI + Render + RapidAPI stack.
+---
+
+# API Factory — Build & Ship Monetized APIs
+
+## Overview
+Repeatable workflow for creating production-ready APIs from domain expertise
+and listing them on RapidAPI for passive income. Proven on TradesCalc
+(25 endpoints, 3 listings, built and deployed in 90 minutes).
+
+## Prerequisites
+- Python 3.11+ installed
+- GitHub account connected (deckeralliance)
+- Render account connected to GitHub
+- RapidAPI account (deckeralliance)
+- Git credentials cached
+
+## Phase 1: Niche & Architecture (5 min)
+
+### Identify the Niche
+- Mine the user's professional expertise for underserved API markets
+- Look for: calculations people do manually, reference data trapped in PDFs,
+  industry-specific formulas not available as APIs
+- Validate: search RapidAPI for existing competition (fewer = better)
+
+### Define API Modules
+- Group endpoints by buyer persona (who pays for this?)
+- Each module becomes a separate RapidAPI listing
+- Plan 5-15 endpoints per module
+- Name each module for its target buyer, not internal architecture
+
+### Architecture Decision
+- Stack: Python 3.12 + FastAPI + Pydantic v2 + Uvicorn
+- Deployment: Render (auto-deploy from GitHub via render.yaml)
+- Marketplace: RapidAPI (separate listing per module)
+- Data: JSON files loaded at startup via singleton DataStore pattern
+- Auth: RapidAPI proxy secret middleware + optional direct API keys
+
+## Phase 2: Scaffold (5 min)
+
+### Project Structure Template
+```
+project-root/
+├── pyproject.toml            # hatchling build, deps: fastapi, pydantic,
+│                             #   pydantic-settings, uvicorn, python-dotenv
+├── render.yaml               # Render auto-deploy config
+├── README.md                 # Professional readme
+├── .env.example              # Env var template
+├── .gitignore                # Python gitignore
+├── .github/workflows/ci.yml  # GitHub Actions CI (pytest on push/PR)
+├── src/{project_name}/
+│   ├── __init__.py           # Version string
+│   ├── main.py               # FastAPI app with CORS + proxy auth middleware
+│   ├── config.py             # pydantic-settings from env vars
+│   ├── data/                 # JSON reference data files
+│   ├── models/               # Pydantic v2 request/response models
+│   │   └── {module}.py       # One file per API module
+│   ├── routers/              # FastAPI endpoint routers
+│   │   └── {module}.py       # One file per API module
+│   └── services/             # Business logic + data access
+│       └── data_store.py     # Singleton DataStore (load JSON at startup)
+└── tests/
+    ├── conftest.py           # Session-scoped data loading + TestClient fixture
+    └── test_{module}.py      # One test file per module
+```
+
+### Key Patterns
+- main.py: RapidAPI proxy secret validation middleware, CORS for all origins
+- config.py: pydantic-settings with env var aliases, default dev values
+- DataStore: Singleton loaded once at startup, accessed by all routers
+- Each module: models/{module}.py + routers/{module}.py (never mix)
+- Routers: POST for calculations, GET for reference data/lookups
+- Placeholder endpoints: Return 501 with "Coming in v1.1" message
+
+### pyproject.toml Dependencies
+```toml
+dependencies = [
+    "fastapi[standard]>=0.115.0",
+    "uvicorn[standard]>=0.30.0",
+    "pydantic>=2.0",
+    "pydantic-settings>=2.0",
+    "python-dotenv>=1.0.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "httpx>=0.27"]
+```
+
+## Phase 3: Build Data & Endpoints (20-30 min)
+
+### Data Layer
+- Encode reference data as JSON (tables, constants, lookup values)
+- Create DataStore singleton service (load once at startup via lifespan)
+- Include _meta fields for source attribution and disclaimers
+- Validate against authoritative sources (codebooks, standards, specs)
+
+### Parallel Build Strategy (CRITICAL FOR SPEED)
+Launch subagents in parallel — one per API module:
+
+```
+Main Agent: Creates scaffold, data files, config, conftest.py
+Subagent 1: Builds Module A models + router + tests
+Subagent 2: Builds Module B models + router + tests
+Subagent 3: Builds Module C models + router + tests
+```
+
+### Subagent Prompt Requirements
+Give each subagent:
+1. Exact file paths to create (models, router, tests)
+2. Complete list of endpoints with method, path, formula/logic, response shape
+3. All Pydantic model definitions with field names, types, constraints
+4. Import paths for shared services (DataStore, config)
+5. Error handling: 400 bad input, 404 not found, 422 validation, 501 placeholder
+6. Test cases with engineering-verified expected values
+
+### Model Conventions
+- Pydantic v2 with Field() for descriptions, examples, constraints
+- Literal types for constrained string choices
+- Every request model has a matching response model
+- Validation: ge=0, le=X, pattern=regex where appropriate
+- Use descriptive field names matching industry terminology
+
+### Router Conventions
+- Every endpoint: operation_id, summary, description, response_model
+- Use HTTPException for errors with clear detail messages
+- POST for calculations, GET for reference data
+- Include a GET /info endpoint per module (returns module description + endpoint list)
+- Include a GET /health system endpoint (returns status + version)
+
+## Phase 4: Test & Verify (5 min)
+
+### Test Strategy
+- Write tests alongside endpoints (subagents create both)
+- Use engineering-verified expected values with source comments
+- Test categories: valid input → correct output, edge cases, invalid input → 400/422
+- conftest.py: session-scoped DataStore loading + TestClient fixture
+
+### Run Tests
+```bash
+pip install -e ".[dev]"
+pytest tests/ -v --tb=short
+```
+
+### Common Fix Pattern
+Tests usually fail on response shape mismatches (dict key names, list vs object).
+Fix: align test assertions with actual response structure, not vice versa.
+
+## Phase 5: Git + Deploy (5 min)
+
+### Push to GitHub
+```bash
+git add -A
+git commit -m "feat: {Project} API v0.1.0 — {N} endpoints, {M} tests passing"
+git branch -M main
+git remote add origin https://github.com/deckeralliance/{repo-name}.git
+git push -u origin main
+```
+Note: First push requires user to authenticate via credential manager popup.
+Subsequent pushes work automatically.
+
+### Deploy to Render
+Use browser agent to:
+1. Navigate to render.com (user logged in via GitHub SSO)
+2. New + → Web Service → connect GitHub repo
+3. Render auto-detects render.yaml
+4. Add env vars: {PROJECT}_ENV=production, RAPIDAPI_PROXY_SECRET=(blank for now)
+5. Deploy → wait for "Live" status (~2-3 min)
+6. Verify: GET /health and browse /docs
+
+### render.yaml Template
+```yaml
+services:
+  - type: web
+    name: {project-name}
+    runtime: python
+    plan: free
+    buildCommand: pip install -e ".[dev]"
+    startCommand: uvicorn src.{project_name}.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.12"
+```
+
+## Phase 6: Brand & List (15 min)
+
+### Generate Logos
+One logo per API module using generate_image tool:
+- Template: "Professional modern app icon, dark navy background (#0a0e1a),
+  [SYMBOL] in [ACCENT_COLOR], circuit-board background pattern, no text,
+  500x500, rounded corners, premium feel"
+- Color palette by domain:
+  - Electrical/engineering: amber/gold (#FFB800)
+  - Fire/safety: red-orange (#FF4500)
+  - Data/analytics: blue (#4A90D9)
+  - Environmental: green (#2ECC71)
+  - Healthcare: teal (#1ABC9C)
+
+### RapidAPI Listing (per module)
+Follow the `rapidapi-studio-listing` skill for detailed UI navigation.
+
+**Critical order of operations:**
+1. Create API Project (import from OpenAPI URL)
+2. Configure Gateway → set Base URL, copy proxy secret
+3. Import Definitions from OpenAPI spec (via CI/CD tab)
+4. THEN configure General tab (import resets it!)
+5. Upload logo
+6. Configure Monetization (price dialog + quota dialog separately)
+7. Set visibility → PUBLIC
+
+### Add Proxy Secret to Render
+After getting the X-RapidAPI-Proxy-Secret from Gateway tab:
+- Go to Render dashboard → service → Environment
+- Set RAPIDAPI_PROXY_SECRET = {copied value}
+- Save (triggers redeploy)
+
+### Pricing Strategy
+- Always have generous FREE tier (discovery mechanism)
+- Price by buyer persona budget, not by cost
+- RapidAPI takes ~25% — plan for that
+- Split modules into separate listings when buyer personas differ
+- Higher-budget buyers (enterprise, utilities) → higher prices
+- Consumer/hobbyist buyers → lower prices, higher volume play
+
+## Phase 7: Post-Launch
+
+### Immediate
+- Register domain ({project}.dev) via Cloudflare (~$10-12/yr)
+- Deploy landing page (dark theme, premium feel, feature cards, pricing, code examples)
+- Git push landing page (docs/ directory)
+
+### Week 1
+- Monitor RapidAPI Analytics for usage patterns
+- Write dev.to article about the API
+- Post on relevant subreddits and LinkedIn
+- Cross-check data against authoritative sources
+
+### Ongoing
+- Add endpoints based on user requests
+- Fill in placeholder (501) endpoints
+- Add more data tables and calculation types
+- Generate SDKs from /openapi.json (openapi-generator-cli)
+- Add Stripe direct billing on custom domain
+
+## Reference: TradesCalc Metrics (Benchmark)
+- Time from start to live: ~90 minutes
+- Endpoints: 25 (12 electrical + 5 utility + 7 fire + 1 system)
+- Tests: 33 (all passing)
+- Files: 27
+- Lines of code: 4,020
+- RapidAPI listings: 3 (Electrical, Fire, Utility)
+- Pricing tiers: 3-4 per listing
+- Logo generation: ~10 seconds each
+- Landing page: built by subagent in ~3 minutes

@@ -202,3 +202,6 @@ listings. Each listing is a separate "API Project" in Studio.
 - These are TWO SEPARATE dialogs — browser agents must handle both
 - Bandwidth Platform Fee defaults to $0.001/MB and is usually left as-is
 - The API preview card shows: Popularity score, Latency, Success Rate
+- **OpenAPI import via CI/CD resets the General tab** — always configure General tab AFTER importing endpoints, not before
+- When splitting into multiple listings, do imports first, then fill descriptions
+- Plan pricing may need manual verification after browser automation — always screenshot the final state

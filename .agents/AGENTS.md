@@ -14,6 +14,22 @@
 - **Stack**: Python 3.12 + FastAPI + Pydantic + Uvicorn, deployed to Render, listed on RapidAPI
 - **Architecture**: Modular — `src/tradescalc/` with routers/, services/, models/, data/ directories. NEC tables stored as JSON, loaded at startup via NECDataStore singleton
 - **RapidAPI account**: Personal Account (deckeralliance). Demo project exists for reference
-- **Revenue model**: 6-tier pricing (Free → $499/mo Enterprise) on RapidAPI + direct billing via Stripe on tradescalc.dev
+- **Revenue model**: Split listings per module on RapidAPI (Free → $99.99/mo per module) + future direct billing via Stripe
 - **Plans**: See `tradescalc_10x_plan.md` artifact for full 12-month roadmap
-- **Status**: Actively building Week 1 — project scaffold, NEC data tables, and electrical endpoints in progress
+- **Status**: v0.1.0 LIVE — 25 endpoints deployed to Render, 3 RapidAPI listings (Electrical, Fire, Utility) all PUBLIC
+- **GitHub**: https://github.com/deckeralliance/tradescalc-api
+- **Live API**: https://tradescalc-api.onrender.com
+- **RapidAPI listings**:
+  - https://rapidapi.com/deckeralliance/api/tradescalc (Electrical)
+  - https://rapidapi.com/deckeralliance/api/tradescalc-fire (Fire)
+  - https://rapidapi.com/deckeralliance/api/tradescalc-utility (Utility)
+
+## Revenue Goal — API Passive Income
+
+- **Strategy**: Build and list niche APIs on RapidAPI using domain expertise
+- **Workflow**: Use the `api-factory` skill for repeatable end-to-end builds
+- **Stack**: Python + FastAPI → Render → RapidAPI (split listings per module)
+- **Current products**: TradesCalc (Electrical, Fire, Utility)
+- **Target**: Multiple API products across trades/engineering niches
+- **Key accounts**: GitHub (deckeralliance), Render (GitHub SSO), RapidAPI (deckeralliance)
+- **Pricing principle**: Price by buyer persona budget, not by cost. Split modules when personas differ.
