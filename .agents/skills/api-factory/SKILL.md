@@ -140,11 +140,23 @@ Give each subagent:
 - Test categories: valid input → correct output, edge cases, invalid input → 400/422
 - conftest.py: session-scoped DataStore loading + TestClient fixture
 
-### Run Tests
+### Run Locally Before Pushing
 ```bash
 pip install -e ".[dev]"
+
+# Lint and auto-fix
+ruff check src/ tests/ --fix
+ruff format src/ tests/
+
+# Verify lint passes cleanly
+ruff check src/ tests/
+ruff format --check src/ tests/
+
+# Run tests
 pytest tests/ -v --tb=short
 ```
+
+All 3 must pass (0 lint errors, 0 format changes, all tests green) before pushing.
 
 ### Common Fix Pattern
 Tests usually fail on response shape mismatches (dict key names, list vs object).
