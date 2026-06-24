@@ -10,7 +10,6 @@ Verify all calculations against the official NEC codebook.
 """
 
 import math
-from typing import Optional
 
 from fastapi import APIRouter, HTTPException
 
@@ -45,14 +44,53 @@ router = APIRouter()
 # Constants
 # ---------------------------------------------------------------------------
 STANDARD_BREAKER_SIZES: list[int] = [
-    15, 20, 25, 30, 35, 40, 45, 50, 60, 70, 80, 90,
-    100, 110, 125, 150, 175, 200, 225, 250, 300, 350,
-    400, 450, 500, 600,
+    15,
+    20,
+    25,
+    30,
+    35,
+    40,
+    45,
+    50,
+    60,
+    70,
+    80,
+    90,
+    100,
+    110,
+    125,
+    150,
+    175,
+    200,
+    225,
+    250,
+    300,
+    350,
+    400,
+    450,
+    500,
+    600,
 ]
 
 STANDARD_TRANSFORMER_KVA: list[float] = [
-    3, 5, 7.5, 10, 15, 25, 37.5, 50, 75, 100,
-    150, 167, 200, 250, 300, 500, 750, 1000,
+    3,
+    5,
+    7.5,
+    10,
+    15,
+    25,
+    37.5,
+    50,
+    75,
+    100,
+    150,
+    167,
+    200,
+    250,
+    300,
+    500,
+    750,
+    1000,
 ]
 
 # NEC 314.16(B) — Volume allowance per conductor in cubic inches
@@ -173,7 +211,7 @@ def _get_adjustment_factor(num_conductors: int) -> float:
     return 0.35  # 41+ conductors
 
 
-def _get_rooftop_adder(distance_inches: Optional[float]) -> float:
+def _get_rooftop_adder(distance_inches: float | None) -> float:
     """Get rooftop temperature adder in °C based on distance above roof."""
     if distance_inches is None:
         return 0.0
@@ -297,7 +335,7 @@ async def calculate_wire_size(request: WireSizeRequest) -> WireSizeResponse:
             detail="NEC wire size data not loaded. Contact support.",
         )
 
-    best_size: Optional[str] = None
+    best_size: str | None = None
     best_ampacity: int = 0
     best_vd_volts: float = 0.0
     best_vd_percent: float = 0.0
@@ -314,9 +352,7 @@ async def calculate_wire_size(request: WireSizeRequest) -> WireSizeResponse:
             continue
 
         # Check voltage drop
-        resistance = NECDataStore.get_conductor_resistance(
-            wire_size=size, material=request.material
-        )
+        resistance = NECDataStore.get_conductor_resistance(wire_size=size, material=request.material)
         if resistance is None:
             continue
 
@@ -395,9 +431,7 @@ async def calculate_voltage_drop(
     request: VoltageDropRequest,
 ) -> VoltageDropResponse:
     """Calculate voltage drop for a specified conductor and load."""
-    resistance = NECDataStore.get_conductor_resistance(
-        wire_size=request.wire_size, material=request.material
-    )
+    resistance = NECDataStore.get_conductor_resistance(wire_size=request.wire_size, material=request.material)
     if resistance is None:
         raise HTTPException(
             status_code=400,
@@ -473,9 +507,7 @@ async def calculate_conduit_fill(
     # Find smallest conduit that fits
     conduit_sizes = NECDataStore.get_standard_conduit_sizes()
     for conduit_size in conduit_sizes:
-        conduit_area = NECDataStore.get_conduit_area(
-            conduit_size=conduit_size, conduit_type=request.conduit_type
-        )
+        conduit_area = NECDataStore.get_conduit_area(conduit_size=conduit_size, conduit_type=request.conduit_type)
         if conduit_area is None:
             continue
 
@@ -617,13 +649,11 @@ async def calculate_service_entrance(
     wire_sizes = NECDataStore.get_standard_wire_sizes()
 
     # Find minimum conductor — must have ampacity >= total_load_amps
-    selected_size: Optional[str] = None
+    selected_size: str | None = None
     selected_ampacity: int = 0
 
     for size in wire_sizes:
-        ampacity = NECDataStore.get_ampacity(
-            wire_size=size, material=request.material, temp_rating="75"
-        )
+        ampacity = NECDataStore.get_ampacity(wire_size=size, material=request.material, temp_rating="75")
         if ampacity is not None and ampacity >= request.total_load_amps:
             selected_size = size
             selected_ampacity = ampacity
@@ -662,7 +692,8 @@ async def calculate_service_entrance(
 
     for conduit_size in conduit_sizes:
         conduit_area_val = NECDataStore.get_conduit_area(
-            conduit_size=conduit_size, conduit_type="pvc"  # PVC common for service
+            conduit_size=conduit_size,
+            conduit_type="pvc",  # PVC common for service
         )
         if conduit_area_val is not None and total_area <= conduit_area_val * fill_fraction:
             selected_conduit = conduit_size
@@ -691,8 +722,7 @@ async def calculate_service_entrance(
     operation_id="calculate_motor_load",
     summary="Calculate motor branch circuit (coming soon)",
     description=(
-        "Motor branch circuit sizing per NEC Article 430. "
-        "This endpoint is planned for v1.1 and is not yet available."
+        "Motor branch circuit sizing per NEC Article 430. This endpoint is planned for v1.1 and is not yet available."
     ),
     status_code=501,
 )
@@ -717,8 +747,7 @@ async def calculate_motor_load() -> dict:
     operation_id="calculate_demand_load",
     summary="Calculate demand load (coming soon)",
     description=(
-        "Demand load calculation per NEC Article 220. "
-        "This endpoint is planned for v1.1 and is not yet available."
+        "Demand load calculation per NEC Article 220. This endpoint is planned for v1.1 and is not yet available."
     ),
     status_code=501,
 )

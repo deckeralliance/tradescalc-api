@@ -1,6 +1,5 @@
 """Application configuration and settings."""
 
-import os
 from pathlib import Path
 
 from pydantic import Field

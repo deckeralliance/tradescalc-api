@@ -9,10 +9,9 @@ Uses Pydantic v2 with Field() validators, Literal types for constrained
 choices, and comprehensive docstrings for OpenAPI documentation.
 """
 
-from typing import Literal, Optional
+from typing import Literal
 
 from pydantic import BaseModel, Field
-
 
 # ---------------------------------------------------------------------------
 # Shared Types
@@ -112,21 +111,11 @@ class WireSizeRequest(BaseModel):
 class WireSizeResponse(BaseModel):
     """Response model for minimum wire size calculation."""
 
-    recommended_size: str = Field(
-        description="Minimum recommended conductor size (AWG or kcmil)."
-    )
-    ampacity: int = Field(
-        description="Ampacity of the recommended conductor in amperes."
-    )
-    voltage_drop_percent: float = Field(
-        description="Voltage drop percentage at the specified distance."
-    )
-    voltage_drop_volts: float = Field(
-        description="Voltage drop in volts at the specified distance."
-    )
-    passes_3_percent_rule: bool = Field(
-        description="Whether the conductor meets the 3% VD recommendation."
-    )
+    recommended_size: str = Field(description="Minimum recommended conductor size (AWG or kcmil).")
+    ampacity: int = Field(description="Ampacity of the recommended conductor in amperes.")
+    voltage_drop_percent: float = Field(description="Voltage drop percentage at the specified distance.")
+    voltage_drop_volts: float = Field(description="Voltage drop in volts at the specified distance.")
+    passes_3_percent_rule: bool = Field(description="Whether the conductor meets the 3% VD recommendation.")
     load_amps: float = Field(description="Input load current in amperes.")
     distance_ft: float = Field(description="Input one-way distance in feet.")
     voltage: float = Field(description="Input system voltage.")
@@ -257,27 +246,17 @@ class ConduitFillRequest(BaseModel):
 class ConduitFillResponse(BaseModel):
     """Response model for conduit fill calculation."""
 
-    min_conduit_size: str = Field(
-        description="Minimum conduit trade size that meets fill requirements."
-    )
-    fill_percent: float = Field(
-        description="Actual fill percentage with the selected conduit size."
-    )
-    fill_area_in2: float = Field(
-        description="Total cross-sectional area of all conductors in square inches."
-    )
+    min_conduit_size: str = Field(description="Minimum conduit trade size that meets fill requirements.")
+    fill_percent: float = Field(description="Actual fill percentage with the selected conduit size.")
+    fill_area_in2: float = Field(description="Total cross-sectional area of all conductors in square inches.")
     max_fill_area_in2: float = Field(
         description="Maximum allowable fill area for the selected conduit in square inches."
     )
     conduit_area_in2: float = Field(
         description="Internal cross-sectional area of the selected conduit in square inches."
     )
-    max_fill_percent: float = Field(
-        description="Maximum allowable fill percentage per NEC Chapter 9, Table 1."
-    )
-    total_conductors: int = Field(
-        description="Total number of individual conductors."
-    )
+    max_fill_percent: float = Field(description="Maximum allowable fill percentage per NEC Chapter 9, Table 1.")
+    total_conductors: int = Field(description="Total number of individual conductors.")
     conduit_type: str = Field(description="Conduit type used.")
     nec_reference: str = Field(
         default="NEC 2023 Chapter 9, Tables 1, 4, and 5",
@@ -325,7 +304,7 @@ class AmpacityDeratedRequest(BaseModel):
         description="Number of current-carrying conductors in the raceway. 1-3 = no adjustment.",
         examples=[6],
     )
-    rooftop_distance_inches: Optional[float] = Field(
+    rooftop_distance_inches: float | None = Field(
         default=None,
         ge=0,
         description=(
@@ -339,28 +318,15 @@ class AmpacityDeratedRequest(BaseModel):
 class AmpacityDeratedResponse(BaseModel):
     """Response model for derated ampacity calculation."""
 
-    base_ampacity: int = Field(
-        description="Base ampacity from Table 310.16 before any derating."
-    )
-    temp_correction_factor: float = Field(
-        description="Temperature correction factor applied."
-    )
-    adjustment_factor: float = Field(
-        description="Bundling adjustment factor applied."
-    )
-    combined_derating_factor: float = Field(
-        description="Combined derating factor (temp_correction × adjustment)."
-    )
-    derated_ampacity: float = Field(
-        description="Final derated ampacity in amperes."
-    )
+    base_ampacity: int = Field(description="Base ampacity from Table 310.16 before any derating.")
+    temp_correction_factor: float = Field(description="Temperature correction factor applied.")
+    adjustment_factor: float = Field(description="Bundling adjustment factor applied.")
+    combined_derating_factor: float = Field(description="Combined derating factor (temp_correction × adjustment).")
+    derated_ampacity: float = Field(description="Final derated ampacity in amperes.")
     effective_ambient_temp_c: float = Field(
         description="Effective ambient temperature (includes rooftop adder if applicable)."
     )
-    rooftop_adder_c: float = Field(
-        default=0.0,
-        description="Temperature adder for rooftop installations in °C."
-    )
+    rooftop_adder_c: float = Field(default=0.0, description="Temperature adder for rooftop installations in °C.")
     wire_size: str = Field(description="Conductor size used.")
     material: str = Field(description="Conductor material used.")
     temp_rating: str = Field(description="Temperature rating used.")
@@ -397,12 +363,8 @@ class BreakerSizeRequest(BaseModel):
 class BreakerSizeResponse(BaseModel):
     """Response model for breaker sizing calculation."""
 
-    min_breaker_amps: float = Field(
-        description="Minimum breaker amperage (raw, before rounding to standard size)."
-    )
-    standard_breaker_amps: int = Field(
-        description="Next standard breaker size in amperes."
-    )
+    min_breaker_amps: float = Field(description="Minimum breaker amperage (raw, before rounding to standard size).")
+    standard_breaker_amps: int = Field(description="Next standard breaker size in amperes.")
     continuous_load_factor: float = Field(
         description="Load multiplier applied (1.25 for continuous, 1.0 for non-continuous)."
     )
@@ -451,18 +413,10 @@ class ServiceEntranceRequest(BaseModel):
 class ServiceEntranceResponse(BaseModel):
     """Response model for service entrance sizing."""
 
-    min_wire_size: str = Field(
-        description="Minimum conductor size for service entrance conductors."
-    )
-    wire_ampacity: int = Field(
-        description="Ampacity of the selected conductor."
-    )
-    min_conduit_size: str = Field(
-        description="Minimum conduit size for the service entrance conductors."
-    )
-    main_breaker_amps: int = Field(
-        description="Recommended main breaker size in amperes."
-    )
+    min_wire_size: str = Field(description="Minimum conductor size for service entrance conductors.")
+    wire_ampacity: int = Field(description="Ampacity of the selected conductor.")
+    min_conduit_size: str = Field(description="Minimum conduit size for the service entrance conductors.")
+    main_breaker_amps: int = Field(description="Recommended main breaker size in amperes.")
     total_load_amps: float = Field(description="Input service load.")
     voltage: float = Field(description="Service voltage.")
     phase: str = Field(description="Phase configuration.")
@@ -534,21 +488,11 @@ class SuggestedBox(BaseModel):
 class BoxFillResponse(BaseModel):
     """Response model for box fill calculation."""
 
-    min_box_volume_in3: float = Field(
-        description="Minimum required box volume in cubic inches."
-    )
-    conductor_volume_in3: float = Field(
-        description="Volume required for conductors only."
-    )
-    device_volume_in3: float = Field(
-        description="Volume allowance for devices."
-    )
-    clamp_volume_in3: float = Field(
-        description="Volume allowance for internal clamps."
-    )
-    ground_volume_in3: float = Field(
-        description="Volume allowance for grounding conductors."
-    )
+    min_box_volume_in3: float = Field(description="Minimum required box volume in cubic inches.")
+    conductor_volume_in3: float = Field(description="Volume required for conductors only.")
+    device_volume_in3: float = Field(description="Volume allowance for devices.")
+    clamp_volume_in3: float = Field(description="Volume allowance for internal clamps.")
+    ground_volume_in3: float = Field(description="Volume allowance for grounding conductors.")
     suggested_box_sizes: list[SuggestedBox] = Field(
         description="Standard box sizes that meet the minimum volume requirement."
     )
@@ -591,21 +535,13 @@ class TransformerSizingRequest(BaseModel):
 class TransformerSizingResponse(BaseModel):
     """Response model for transformer sizing calculation."""
 
-    min_kva: float = Field(
-        description="Minimum required kVA (load_va / 1000)."
-    )
-    standard_kva: float = Field(
-        description="Next standard transformer kVA rating."
-    )
+    min_kva: float = Field(description="Minimum required kVA (load_va / 1000).")
+    standard_kva: float = Field(description="Next standard transformer kVA rating.")
     load_va: float = Field(description="Input load in VA.")
     voltage_primary: float = Field(description="Primary voltage.")
     voltage_secondary: float = Field(description="Secondary voltage.")
-    primary_fla: float = Field(
-        description="Full-load amps on the primary side at the standard kVA rating."
-    )
-    secondary_fla: float = Field(
-        description="Full-load amps on the secondary side at the standard kVA rating."
-    )
+    primary_fla: float = Field(description="Full-load amps on the primary side at the standard kVA rating.")
+    secondary_fla: float = Field(description="Full-load amps on the secondary side at the standard kVA rating.")
     nec_reference: str = Field(
         default="NEC 2023 Article 450",
         description="NEC code reference.",

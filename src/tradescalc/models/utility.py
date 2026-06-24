@@ -6,7 +6,6 @@ major event day detection, and outage cost estimation.
 """
 
 from pydantic import BaseModel, Field
-from typing import Optional
 
 
 # ---------------------------------------------------------------------------
@@ -27,7 +26,7 @@ class OutageEvent(BaseModel):
         description="Duration of the outage in minutes.",
         json_schema_extra={"examples": [120.0]},
     )
-    event_date: Optional[str] = Field(
+    event_date: str | None = Field(
         default=None,
         description="Date of the event (ISO-8601 string, e.g. '2024-07-15'). Optional metadata.",
         json_schema_extra={"examples": ["2024-07-15"]},
@@ -48,7 +47,7 @@ class ReliabilityRequest(BaseModel):
         description="Total number of customers served by the utility during the reporting period.",
         json_schema_extra={"examples": [15000]},
     )
-    period_description: Optional[str] = Field(
+    period_description: str | None = Field(
         default=None,
         description="Human-readable label for the period (e.g. 'Q2 2024', '2024 Annual').",
         json_schema_extra={"examples": ["Q2 2024"]},
@@ -64,13 +63,13 @@ class ReliabilityResponse(BaseModel):
     )
     saifi: float = Field(
         ...,
-        description="System Average Interruption Frequency Index — average number of interruptions per customer served.",
+        description="SAIFI — average number of interruptions per customer served.",
     )
     caidi: float = Field(
         ...,
-        description="Customer Average Interruption Duration Index — average outage duration per affected customer (minutes).",
+        description="CAIDI — average outage duration per affected customer (minutes).",
     )
-    maifi: Optional[float] = Field(
+    maifi: float | None = Field(
         default=None,
         description="Momentary Average Interruption Frequency Index (if momentary data supplied).",
     )
@@ -82,7 +81,7 @@ class ReliabilityResponse(BaseModel):
         ...,
         description="Sum of customers_affected across all events.",
     )
-    period: Optional[str] = Field(
+    period: str | None = Field(
         default=None,
         description="Period label echoed back from the request.",
     )
@@ -103,7 +102,7 @@ class MajorEventDayRequest(BaseModel):
             "daily data recommended per IEEE 1366."
         ),
     )
-    daily_saidi: Optional[float] = Field(
+    daily_saidi: float | None = Field(
         default=None,
         description=(
             "The daily SAIDI value to test against the computed TMED threshold. "
@@ -119,11 +118,11 @@ class MajorEventDayResponse(BaseModel):
         ...,
         description="Computed TMED threshold (minutes). Days exceeding this are classified as Major Event Days.",
     )
-    is_major_event_day: Optional[bool] = Field(
+    is_major_event_day: bool | None = Field(
         default=None,
         description="Whether the provided daily_saidi exceeds the TMED threshold.",
     )
-    daily_saidi: Optional[float] = Field(
+    daily_saidi: float | None = Field(
         default=None,
         description="The daily SAIDI value that was tested (echoed back).",
     )

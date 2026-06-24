@@ -6,7 +6,6 @@ pump discharge pressure, needed fire flow, ISO grading, and NERIS codes.
 """
 
 from pydantic import BaseModel, Field
-from typing import Optional
 
 
 # ---------------------------------------------------------------------------
@@ -184,7 +183,7 @@ class NeededFireFlowRequest(BaseModel):
         ),
         json_schema_extra={"examples": [3]},
     )
-    occupancy_factor: Optional[float] = Field(
+    occupancy_factor: float | None = Field(
         default=None,
         ge=-1.0,
         le=1.0,
@@ -194,7 +193,7 @@ class NeededFireFlowRequest(BaseModel):
             "If omitted, no adjustment is applied."
         ),
     )
-    exposure_factor: Optional[float] = Field(
+    exposure_factor: float | None = Field(
         default=None,
         ge=-1.0,
         le=1.0,

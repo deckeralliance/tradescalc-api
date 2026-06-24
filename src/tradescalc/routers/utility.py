@@ -6,16 +6,17 @@ outage cost estimation, and national benchmarks.
 """
 
 import math
+
 from fastapi import APIRouter, HTTPException
 
 from tradescalc.models.utility import (
-    ReliabilityRequest,
-    ReliabilityResponse,
+    CostBreakdown,
     MajorEventDayRequest,
     MajorEventDayResponse,
     OutageCostRequest,
     OutageCostResponse,
-    CostBreakdown,
+    ReliabilityRequest,
+    ReliabilityResponse,
 )
 
 router = APIRouter()
@@ -37,12 +38,8 @@ router = APIRouter()
 )
 async def calculate_reliability(request: ReliabilityRequest) -> ReliabilityResponse:
     """Calculate SAIDI, SAIFI, and CAIDI from outage event data."""
-    total_customer_minutes: float = sum(
-        e.customers_affected * e.duration_minutes for e in request.outage_events
-    )
-    total_customer_interruptions: int = sum(
-        e.customers_affected for e in request.outage_events
-    )
+    total_customer_minutes: float = sum(e.customers_affected * e.duration_minutes for e in request.outage_events)
+    total_customer_interruptions: int = sum(e.customers_affected for e in request.outage_events)
     n = request.total_customers_served
 
     saidi = total_customer_minutes / n

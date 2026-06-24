@@ -8,18 +8,18 @@ needed fire flow, ISO grading, and NERIS incident type codes.
 from fastapi import APIRouter, HTTPException
 
 from tradescalc.models.fire import (
-    HydrantFlowRequest,
-    HydrantFlowResponse,
     FrictionLossRequest,
     FrictionLossResponse,
-    PumpPressureRequest,
-    PumpPressureResponse,
-    PressureBreakdown,
+    HydrantFlowRequest,
+    HydrantFlowResponse,
+    ISOGradingCategory,
+    ISOGradingResponse,
     NeededFireFlowRequest,
     NeededFireFlowResponse,
-    ISOGradingResponse,
-    ISOGradingCategory,
     NERISCodeResponse,
+    PressureBreakdown,
+    PumpPressureRequest,
+    PumpPressureResponse,
 )
 
 router = APIRouter()
@@ -29,12 +29,12 @@ router = APIRouter()
 # Construction class factors for Needed Fire Flow (ISO)
 # ---------------------------------------------------------------------------
 _CONSTRUCTION_FACTORS: dict[int, float] = {
-    1: 1.5,   # Frame
-    2: 1.0,   # Joisted Masonry
-    3: 1.0,   # Heavy Timber
-    4: 0.8,   # Non-Combustible
-    5: 0.8,   # Modified Fire Resistive
-    6: 0.6,   # Fire Resistive
+    1: 1.5,  # Frame
+    2: 1.0,  # Joisted Masonry
+    3: 1.0,  # Heavy Timber
+    4: 0.8,  # Non-Combustible
+    5: 0.8,  # Modified Fire Resistive
+    6: 0.6,  # Fire Resistive
 }
 
 
@@ -70,7 +70,7 @@ async def calculate_hydrant_flow(request: HydrantFlowRequest) -> HydrantFlowResp
         )
 
     pressure_ratio = (sp - 20.0) / (sp - rp)
-    coefficient = pressure_ratio ** 0.54
+    coefficient = pressure_ratio**0.54
     available_gpm = flow * coefficient
 
     return HydrantFlowResponse(
@@ -102,7 +102,7 @@ async def calculate_friction_loss(request: FrictionLossRequest) -> FrictionLossR
     length = request.length_ft
 
     # FL per foot = (4.52 * Q^1.85) / (C^1.85 * d^4.87)
-    fl_per_foot = (4.52 * (q ** 1.85)) / ((c ** 1.85) * (d ** 4.87))
+    fl_per_foot = (4.52 * (q**1.85)) / ((c**1.85) * (d**4.87))
     fl_total = fl_per_foot * length
     fl_per_100 = fl_per_foot * 100.0
 
@@ -131,12 +131,7 @@ async def calculate_pump_pressure(request: PumpPressureRequest) -> PumpPressureR
     """Calculate engine pump discharge pressure."""
     elevation_pressure = request.elevation_ft * 0.434
 
-    pdp = (
-        request.nozzle_pressure_psi
-        + request.friction_loss_psi
-        + elevation_pressure
-        + request.appliance_loss_psi
-    )
+    pdp = request.nozzle_pressure_psi + request.friction_loss_psi + elevation_pressure + request.appliance_loss_psi
 
     return PumpPressureResponse(
         engine_pressure_psi=round(pdp, 2),

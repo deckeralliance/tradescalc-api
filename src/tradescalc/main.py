@@ -6,12 +6,13 @@ Built by engineers, for engineers.
 """
 
 from contextlib import asynccontextmanager
+
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from tradescalc.config import get_settings
-from tradescalc.routers import electrical, utility, fire
+from tradescalc.routers import electrical, fire, utility
 
 
 @asynccontextmanager
@@ -19,6 +20,7 @@ async def lifespan(app: FastAPI):
     """Application startup and shutdown events."""
     # Startup: load NEC data tables into memory
     from tradescalc.services.nec_data import NECDataStore
+
     NECDataStore.load_all()
     yield
     # Shutdown: cleanup if needed
@@ -86,9 +88,7 @@ async def validate_rapidapi_proxy(request: Request, call_next):
         api_key = request.headers.get("X-Api-Key", "")
 
         # Support multiple proxy secrets (comma-separated) for split listings
-        valid_secrets = [
-            s.strip() for s in settings.rapidapi_proxy_secret.split(",") if s.strip()
-        ]
+        valid_secrets = [s.strip() for s in settings.rapidapi_proxy_secret.split(",") if s.strip()]
 
         # Accept either a matching RapidAPI proxy secret OR direct API key
         if proxy_secret not in valid_secrets and not api_key:

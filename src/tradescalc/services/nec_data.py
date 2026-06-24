@@ -7,7 +7,6 @@ for ampacity, conduit fill, conductor resistance, and other NEC tables.
 
 import json
 from pathlib import Path
-from typing import Optional
 
 
 class NECDataStore:
@@ -22,10 +21,10 @@ class NECDataStore:
         """Load all NEC data files into memory."""
         data_dir = Path(__file__).parent.parent / "data"
 
-        with open(data_dir / "nec_310_16.json", "r") as f:
+        with open(data_dir / "nec_310_16.json") as f:
             cls._ampacity_data = json.load(f)
 
-        with open(data_dir / "nec_chapter9.json", "r") as f:
+        with open(data_dir / "nec_chapter9.json") as f:
             cls._chapter9_data = json.load(f)
 
         cls._loaded = True
@@ -39,9 +38,7 @@ class NECDataStore:
     # Ampacity Lookups (Table 310.16)
     # -----------------------------------------------------------------------
     @classmethod
-    def get_ampacity(
-        cls, wire_size: str, material: str = "copper", temp_rating: str = "75"
-    ) -> Optional[int]:
+    def get_ampacity(cls, wire_size: str, material: str = "copper", temp_rating: str = "75") -> int | None:
         """Get ampacity for a given wire size, material, and temperature rating.
 
         Args:
@@ -68,29 +65,23 @@ class NECDataStore:
     # Conductor Properties (Chapter 9)
     # -----------------------------------------------------------------------
     @classmethod
-    def get_conductor_area(cls, wire_size: str) -> Optional[float]:
+    def get_conductor_area(cls, wire_size: str) -> float | None:
         """Get conductor area (with insulation) in square inches for THHN/THWN-2."""
         cls._ensure_loaded()
         return cls._chapter9_data.get("conductor_area_in2", {}).get(str(wire_size))
 
     @classmethod
-    def get_conductor_resistance(
-        cls, wire_size: str, material: str = "copper"
-    ) -> Optional[float]:
+    def get_conductor_resistance(cls, wire_size: str, material: str = "copper") -> float | None:
         """Get DC resistance in ohms per 1000 ft at 75°C."""
         cls._ensure_loaded()
-        resistance_data = cls._chapter9_data.get(
-            "conductor_resistance_ohms_per_1000ft", {}
-        )
+        resistance_data = cls._chapter9_data.get("conductor_resistance_ohms_per_1000ft", {})
         return resistance_data.get(material.lower(), {}).get(str(wire_size))
 
     # -----------------------------------------------------------------------
     # Conduit Fill (Chapter 9 Tables 1 & 4)
     # -----------------------------------------------------------------------
     @classmethod
-    def get_conduit_area(
-        cls, conduit_size: str, conduit_type: str = "emt"
-    ) -> Optional[float]:
+    def get_conduit_area(cls, conduit_size: str, conduit_type: str = "emt") -> float | None:
         """Get internal cross-sectional area of conduit in square inches.
 
         Args:
@@ -140,7 +131,7 @@ class NECDataStore:
     # Full Table Access (for /nec-table/{id} endpoint)
     # -----------------------------------------------------------------------
     @classmethod
-    def get_table(cls, table_id: str) -> Optional[dict]:
+    def get_table(cls, table_id: str) -> dict | None:
         """Get raw table data by ID for the NEC table lookup endpoint.
 
         Supported table IDs:
@@ -164,9 +155,7 @@ class NECDataStore:
                 "rigid": cls._chapter9_data.get("conduit_area_rigid_in2", {}),
                 "unit": "square inches",
             },
-            "ch9-resistance": cls._chapter9_data.get(
-                "conductor_resistance_ohms_per_1000ft", {}
-            ),
+            "ch9-resistance": cls._chapter9_data.get("conductor_resistance_ohms_per_1000ft", {}),
             "ch9-fill": cls._chapter9_data.get("fill_percentages", {}),
         }
         return table_map.get(table_id)
