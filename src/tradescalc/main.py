@@ -12,7 +12,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from tradescalc.config import get_settings
-from tradescalc.routers import electrical, fire, utility
+from tradescalc.routers import electrical, fire, plumbing, roofing, utility
 
 
 @asynccontextmanager
@@ -37,6 +37,10 @@ app = FastAPI(
         "## API Modules\n\n"
         "- **Electrical** (`/v1/electrical/`) — Wire sizing, voltage drop, conduit fill, "
         "ampacity, breaker sizing, and more. All calculations reference NEC 2023.\n"
+        "- **Plumbing** (`/v1/plumbing/`) — Pipe sizing, DWV sizing, fixture units, "
+        "water heater sizing, friction loss, and gas pipe sizing. References UPC/IPC.\n"
+        "- **Roofing** (`/v1/roofing/`) — Pitch, area, materials estimation, rafter length, "
+        "and snow load calculations. References ASCE 7.\n"
         "- **Utility** (`/v1/utility/`) — IEEE 1366 reliability indices (SAIDI, SAIFI, CAIDI), "
         "major event day detection, and outage cost estimation.\n"
         "- **Fire** (`/v1/fire/`) — Hydrant flow, friction loss, pump pressure, "
@@ -125,6 +129,18 @@ app.include_router(
     tags=["Fire — Protection Engineering"],
 )
 
+app.include_router(
+    plumbing.router,
+    prefix="/v1/plumbing",
+    tags=["Plumbing — Calculations"],
+)
+
+app.include_router(
+    roofing.router,
+    prefix="/v1/roofing",
+    tags=["Roofing — Calculations"],
+)
+
 
 # ---------------------------------------------------------------------------
 # Root & Health endpoints
@@ -139,6 +155,8 @@ async def root():
         "status": "operational",
         "modules": {
             "electrical": "/v1/electrical/",
+            "plumbing": "/v1/plumbing/",
+            "roofing": "/v1/roofing/",
             "utility": "/v1/utility/",
             "fire": "/v1/fire/",
         },
