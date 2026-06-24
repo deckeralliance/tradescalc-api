@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TradesCalc — The Infrastructure API for the Trades</title>
+  <meta name="description" content="Production-ready API for NEC 2023 electrical calculations, IEEE 1366 utility reliability indices, and fire protection engineering. Built by a licensed electrical engineer.">
+  <meta name="keywords" content="NEC calculations API, electrical engineering API, voltage drop, conduit fill, SAIDI, SAIFI, fire protection, utility reliability">
+  <meta name="author" content="TradesCalc">
+  <meta property="og:title" content="TradesCalc — The Infrastructure API for the Trades">
+  <meta property="og:description" content="NEC 2023 electrical calculations, utility reliability indices, and fire protection engineering — all in one API.">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#0a0e1a">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ============================================================
+       NAVIGATION
+       ============================================================ -->
+  <nav class="navbar" id="navbar">
+    <div class="container">
+      <a href="#" class="nav-logo">
+        <span class="logo-icon">TC</span>
+        TradesCalc
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#code">API</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="https://rapidapi.com/deckeralliance/api/tradescalc" class="nav-cta" target="_blank" rel="noopener">Get API Key</a></li>
+      </ul>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ============================================================
+       HERO SECTION
+       ============================================================ -->
+  <section class="hero" id="hero">
+    <!-- Animated background elements -->
+    <div class="hero-grid"></div>
+    <div class="hero-glow hero-glow-1"></div>
+    <div class="hero-glow hero-glow-2"></div>
+
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="dot"></span>
+          NEC 2023 Compliant &middot; Now Live
+        </div>
+        <h1>The Infrastructure API<br>for the <span class="accent">Trades</span></h1>
+        <p class="hero-sub">
+          Production-ready NEC electrical calculations, IEEE&nbsp;1366 utility reliability indices,
+          and fire protection engineering — all through a single, blazing-fast API.
+        </p>
+        <div class="hero-actions">
+          <a href="https://rapidapi.com/deckeralliance/api/tradescalc" class="btn btn-primary" target="_blank" rel="noopener">
+            Try Free on RapidAPI →
+          </a>
+          <a href="#code" class="btn btn-secondary">
+            View Documentation
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       STATS BAR
+       ============================================================ -->
+  <div class="stats-bar">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-item reveal">
+          <div class="stat-value">25+</div>
+          <div class="stat-label">API Endpoints</div>
+        </div>
+        <div class="stat-item reveal reveal-delay-1">
+          <div class="stat-value">3</div>
+          <div class="stat-label">API Modules</div>
+        </div>
+        <div class="stat-item reveal reveal-delay-2">
+          <div class="stat-value">NEC 2023</div>
+          <div class="stat-label">Fully Compliant</div>
+        </div>
+        <div class="stat-item reveal reveal-delay-3">
+          <div class="stat-value">&lt;100ms</div>
+          <div class="stat-label">Response Time</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       FEATURES SECTION
+       ============================================================ -->
+  <section class="features" id="features">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="section-label">⚙ Modules</div>
+        <h2 class="section-title">Three Domains. One API.</h2>
+        <p class="section-desc">
+          Every formula verified against the NEC codebook, IEEE standards, and NFPA guidelines.
+          No black boxes — just engineering-grade accuracy.
+        </p>
+      </div>
+
+      <div class="features-grid">
+        <!-- Electrical -->
+        <div class="feature-card reveal">
+          <span class="feature-icon">⚡</span>
+          <h3>Electrical — NEC 2023</h3>
+          <p>
+            Complete NEC Article 310/220/250 calculations. Size conductors, check voltage drop,
+            calculate conduit fill, and verify overcurrent protection — all referencing real NEC tables.
+          </p>
+          <div class="feature-tags">
+            <span class="feature-tag">Wire Sizing</span>
+            <span class="feature-tag">Voltage Drop</span>
+            <span class="feature-tag">Conduit Fill</span>
+            <span class="feature-tag">Ampacity</span>
+            <span class="feature-tag">Breaker Sizing</span>
+            <span class="feature-tag">Derating</span>
+          </div>
+        </div>
+
+        <!-- Utility -->
+        <div class="feature-card reveal reveal-delay-1">
+          <span class="feature-icon">📊</span>
+          <h3>Utility — IEEE 1366</h3>
+          <p>
+            Calculate system reliability indices used by every electric utility in North America.
+            Detect major event days, estimate outage costs, and benchmark your system performance.
+          </p>
+          <div class="feature-tags">
+            <span class="feature-tag">SAIDI</span>
+            <span class="feature-tag">SAIFI</span>
+            <span class="feature-tag">CAIDI</span>
+            <span class="feature-tag">Major Event Day</span>
+            <span class="feature-tag">Outage Cost</span>
+          </div>
+        </div>
+
+        <!-- Fire Protection -->
+        <div class="feature-card reveal reveal-delay-2">
+          <span class="feature-icon">🔥</span>
+          <h3>Fire Protection</h3>
+          <p>
+            Hydrant flow testing, friction loss, pump discharge pressure, needed fire flow, and
+            ISO grading calculations. Includes NERIS incident code lookup for fire reporting.
+          </p>
+          <div class="feature-tags">
+            <span class="feature-tag">Hydrant Flow</span>
+            <span class="feature-tag">Friction Loss</span>
+            <span class="feature-tag">Pump Pressure</span>
+            <span class="feature-tag">Needed Fire Flow</span>
+            <span class="feature-tag">ISO Grading</span>
+            <span class="feature-tag">NERIS Codes</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-separator"></div>
+
+  <!-- ============================================================
+       CODE EXAMPLE SECTION
+       ============================================================ -->
+  <section class="code-section" id="code">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="section-label">&#60;/&#62; Developer Experience</div>
+        <h2 class="section-title">Ship in Minutes, Not Weeks</h2>
+        <p class="section-desc">
+          Simple REST endpoints. Predictable JSON responses. 
+          One API key and you're calculating.
+        </p>
+      </div>
+
+      <div class="code-layout reveal">
+        <!-- Request -->
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-dots">
+              <span></span><span></span><span></span>
+            </div>
+            <span class="code-label">REQUEST</span>
+          </div>
+          <div class="code-body">
+<pre><span class="token-comment"># Calculate voltage drop for a 120V circuit</span>
+<span class="token-method">curl</span> <span class="token-flag">-X</span> <span class="token-keyword">POST</span> \
+  <span class="token-url">https://tradescalc.p.rapidapi.com/electrical/voltage-drop</span> \
+  <span class="token-flag">-H</span> <span class="token-string">"X-RapidAPI-Key: YOUR_KEY"</span> \
+  <span class="token-flag">-H</span> <span class="token-string">"Content-Type: application/json"</span> \
+  <span class="token-flag">-d</span> <span class="token-string">'{
+    "voltage": 120,
+    "current": 20,
+    "length_ft": 150,
+    "wire_size": "12",
+    "conduit_type": "EMT",
+    "phase": "single"
+  }'</span></pre>
+          </div>
+        </div>
+
+        <!-- Response -->
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-dots">
+              <span></span><span></span><span></span>
+            </div>
+            <span class="code-label">RESPONSE &middot; 47ms</span>
+          </div>
+          <div class="code-body">
+<pre><span class="token-punct">{</span>
+  <span class="token-key">"voltage_drop_volts"</span><span class="token-punct">:</span> <span class="token-number">5.76</span><span class="token-punct">,</span>
+  <span class="token-key">"voltage_drop_percent"</span><span class="token-punct">:</span> <span class="token-number">4.8</span><span class="token-punct">,</span>
+  <span class="token-key">"receiving_end_voltage"</span><span class="token-punct">:</span> <span class="token-number">114.24</span><span class="token-punct">,</span>
+  <span class="token-key">"nec_compliant"</span><span class="token-punct">:</span> <span class="token-bool">false</span><span class="token-punct">,</span>
+  <span class="token-key">"recommendation"</span><span class="token-punct">:</span> <span class="token-string">"Exceeds 3% branch limit. Use 10 AWG."</span><span class="token-punct">,</span>
+  <span class="token-key">"nec_reference"</span><span class="token-punct">:</span> <span class="token-string">"NEC 210.19(A)(1) Informational Note No. 4"</span><span class="token-punct">,</span>
+  <span class="token-key">"wire_resistance_ohm_per_kft"</span><span class="token-punct">:</span> <span class="token-number">1.93</span><span class="token-punct">,</span>
+  <span class="token-key">"calculation_method"</span><span class="token-punct">:</span> <span class="token-string">"NEC Chapter 9 Table 9"</span>
+<span class="token-punct">}</span></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-separator"></div>
+
+  <!-- ============================================================
+       PRICING SECTION
+       ============================================================ -->
+  <section class="pricing" id="pricing">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="section-label">💰 Pricing</div>
+        <h2 class="section-title">Start Free. Scale as You Grow.</h2>
+        <p class="section-desc">
+          From weekend projects to enterprise platforms — pick the plan that fits.
+          All plans include every API module.
+        </p>
+      </div>
+
+      <div class="pricing-grid">
+        <!-- Free -->
+        <div class="price-card reveal">
+          <div class="price-name">Free</div>
+          <div class="price-amount">
+            <span class="price-currency">$</span>
+            <span class="price-value">0</span>
+          </div>
+          <div class="price-period">forever</div>
+          <ul class="price-features">
+            <li>50 requests / day</li>
+            <li>Basic endpoints</li>
+            <li>Community support</li>
+            <li>JSON responses</li>
+          </ul>
+          <a href="https://rapidapi.com/deckeralliance/api/tradescalc" class="price-btn" target="_blank" rel="noopener">Get Started</a>
+        </div>
+
+        <!-- Starter -->
+        <div class="price-card reveal reveal-delay-1">
+          <div class="price-name">Starter</div>
+          <div class="price-amount">
+            <span class="price-currency">$</span>
+            <span class="price-value">9.99</span>
+          </div>
+          <div class="price-period">per month</div>
+          <ul class="price-features">
+            <li>1,000 requests / day</li>
+            <li>All endpoints</li>
+            <li>Email support</li>
+            <li>JSON responses</li>
+          </ul>
+          <a href="https://rapidapi.com/deckeralliance/api/tradescalc" class="price-btn" target="_blank" rel="noopener">Subscribe</a>
+        </div>
+
+        <!-- Pro (Featured) -->
+        <div class="price-card featured reveal reveal-delay-2">
+          <div class="price-badge">Most Popular</div>
+          <div class="price-name">Pro</div>
+          <div class="price-amount">
+            <span class="price-currency">$</span>
+            <span class="price-value">29.99</span>
+          </div>
+          <div class="price-period">per month</div>
+          <ul class="price-features">
+            <li>10,000 requests / day</li>
+            <li>All endpoints</li>
+            <li>Priority support</li>
+            <li>JSON responses</li>
+            <li>Usage analytics</li>
+          </ul>
+          <a href="https://rapidapi.com/deckeralliance/api/tradescalc" class="price-btn" target="_blank" rel="noopener">Subscribe</a>
+        </div>
+
+        <!-- Business -->
+        <div class="price-card reveal">
+          <div class="price-name">Business</div>
+          <div class="price-amount">
+            <span class="price-currency">$</span>
+            <span class="price-value">99.99</span>
+          </div>
+          <div class="price-period">per month</div>
+          <ul class="price-features">
+            <li>50,000 requests / day</li>
+            <li>All endpoints</li>
+            <li>Dedicated support</li>
+            <li>SLA guarantee</li>
+            <li>Usage analytics</li>
+          </ul>
+          <a href="https://rapidapi.com/deckeralliance/api/tradescalc" class="price-btn" target="_blank" rel="noopener">Subscribe</a>
+        </div>
+
+        <!-- Enterprise -->
+        <div class="price-card reveal reveal-delay-1">
+          <div class="price-name">Enterprise</div>
+          <div class="price-amount">
+            <span class="price-currency">$</span>
+            <span class="price-value">299.99</span>
+          </div>
+          <div class="price-period">per month</div>
+          <ul class="price-features">
+            <li>500,000 requests / day</li>
+            <li>Custom endpoints</li>
+            <li>Phone support</li>
+            <li>99.9% SLA</li>
+            <li>Dedicated account manager</li>
+          </ul>
+          <a href="https://rapidapi.com/deckeralliance/api/tradescalc" class="price-btn" target="_blank" rel="noopener">Contact Sales</a>
+        </div>
+
+        <!-- Unlimited -->
+        <div class="price-card reveal reveal-delay-2">
+          <div class="price-name">Unlimited</div>
+          <div class="price-amount">
+            <span class="price-currency">$</span>
+            <span class="price-value">499.99</span>
+          </div>
+          <div class="price-period">per month</div>
+          <ul class="price-features">
+            <li>Unlimited requests</li>
+            <li>White-label option</li>
+            <li>Custom integration</li>
+            <li>99.99% SLA</li>
+            <li>Priority engineering</li>
+          </ul>
+          <a href="https://rapidapi.com/deckeralliance/api/tradescalc" class="price-btn" target="_blank" rel="noopener">Contact Sales</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-separator"></div>
+
+  <!-- ============================================================
+       BUILT BY ENGINEERS
+       ============================================================ -->
+  <section class="built-by" id="about">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="section-label">🛠 Built by Engineers</div>
+        <h2 class="section-title">Not Another Generic API</h2>
+      </div>
+
+      <div class="built-by-card reveal">
+        <div class="built-by-avatar">⚡</div>
+        <blockquote>
+          "Built by a licensed electrical engineer and utility operations manager who runs
+          these calculations daily. Every formula is verified against the NEC codebook,
+          IEEE 1366 standard, and NFPA guidelines. This isn't a wrapper around a textbook —
+          it's the tool I wish existed when I was sizing conductors at 2 AM."
+        </blockquote>
+        <div class="built-by-name">TradesCalc Engineering</div>
+        <div class="built-by-title">Licensed PE &middot; Utility Operations &middot; Active Firefighter</div>
+        <div class="credentials">
+          <span class="credential">🎓 Licensed Electrical Engineer</span>
+          <span class="credential">⚡ Utility Operations Manager</span>
+          <span class="credential">🚒 Active Firefighter</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FINAL CTA
+       ============================================================ -->
+  <section class="cta-section">
+    <div class="container">
+      <h2 class="section-title reveal">Ready to Build?</h2>
+      <p class="section-desc reveal reveal-delay-1">
+        Get your free API key in 30 seconds. No credit card required.
+      </p>
+      <div class="cta-actions reveal reveal-delay-2">
+        <a href="https://rapidapi.com/deckeralliance/api/tradescalc" class="btn btn-primary" target="_blank" rel="noopener">
+          Start Free on RapidAPI →
+        </a>
+        <a href="#code" class="btn btn-secondary">
+          Explore the Docs
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FOOTER
+       ============================================================ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <span class="logo-icon">TC</span>
+          TradesCalc
+        </div>
+        <ul class="footer-links">
+          <li><a href="#code">Documentation</a></li>
+          <li><a href="https://github.com/deckeralliance" target="_blank" rel="noopener">GitHub</a></li>
+          <li><a href="https://rapidapi.com/deckeralliance/api/tradescalc" target="_blank" rel="noopener">RapidAPI</a></li>
+          <li><a href="mailto:support@tradescalc.dev">support@tradescalc.dev</a></li>
+        </ul>
+        <div class="footer-copy">
+          &copy; 2024–2026 TradesCalc. All rights reserved. Built with ⚡ by engineers, for engineers.
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============================================================
+       SCRIPTS — Minimal vanilla JS
+       ============================================================ -->
+  <script>
+    // --- Navbar scroll effect ---
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 40);
+    }, { passive: true });
+
+    // --- Mobile nav toggle ---
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.getElementById('navLinks');
+
+    navToggle.addEventListener('click', () => {
+      navLinks.classList.toggle('open');
+    });
+
+    // Close mobile nav on link click
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('open');
+      });
+    });
+
+    // --- Scroll reveal (IntersectionObserver) ---
+    const revealElements = document.querySelectorAll('.reveal');
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.1,
+      rootMargin: '0px 0px -60px 0px'
+    });
+
+    revealElements.forEach(el => revealObserver.observe(el));
+  </script>
+
+</body>
+</html>
