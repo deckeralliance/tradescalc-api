@@ -160,8 +160,10 @@ git branch -M main
 git remote add origin https://github.com/deckeralliance/{repo-name}.git
 git push -u origin main
 ```
-Note: First push requires user to authenticate via credential manager popup.
-Subsequent pushes work automatically.
+> **IMPORTANT**: The first `git push` must be done by the USER in their own
+> PowerShell terminal. The agent's terminal cannot surface the Windows Git
+> Credential Manager popup. After the first successful push, credentials are
+> cached and all subsequent pushes work from the agent terminal.
 
 ### Deploy to Render
 Use browser agent to:
@@ -171,6 +173,11 @@ Use browser agent to:
 4. Add env vars: {PROJECT}_ENV=production, RAPIDAPI_PROXY_SECRET=(blank for now)
 5. Deploy → wait for "Live" status (~2-3 min)
 6. Verify: GET /health and browse /docs
+
+> **NOTE**: Render Free tier spins down after 15 min of inactivity. First
+> request after idle takes ~30 seconds (cold start). This affects RapidAPI
+> latency metrics. Recommend upgrading to Starter ($7/mo) once the API gets
+> its first paying subscriber. Until then, Free tier costs $0.
 
 ### render.yaml Template
 ```yaml

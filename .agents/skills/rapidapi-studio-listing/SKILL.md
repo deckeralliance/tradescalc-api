@@ -130,6 +130,10 @@ See `resources/` directory for UI reference screenshots:
    - Select **"Hard Limit"** for most cases
 5. Click **"Save Changes"**
 
+> **WARNING**: RapidAPI defaults the BASIC (free) plan to 500,000 requests/month.
+> This is far too generous — always explicitly set the BASIC plan quota to 1,500/month
+> (or your intended free tier limit). Do NOT skip quota configuration on the free tier.
+
 > **Browser Agent Note**: The quota dialog is a SEPARATE dialog from the price dialog.
 > You must click in a different place to access it. The "+" button is in the Objects
 > section under each plan column, NOT the "Edit" button which opens the price dialog.

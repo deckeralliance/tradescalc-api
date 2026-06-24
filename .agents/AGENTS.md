@@ -33,3 +33,7 @@
 - **Target**: Multiple API products across trades/engineering niches
 - **Key accounts**: GitHub (deckeralliance), Render (GitHub SSO), RapidAPI (deckeralliance)
 - **Pricing principle**: Price by buyer persona budget, not by cost. Split modules when personas differ.
+
+## Rules
+
+- **No credential claims**: Never state or imply professional licenses (PE, licensed, certified) unless the user has explicitly confirmed them. Use general terms like "engineer" or "operations manager" instead. Getting this wrong is a legal liability.
