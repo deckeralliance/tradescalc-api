@@ -1,6 +1,6 @@
 ## User Context — James
 
-- **Profession**: Licensed Electrical Engineer, Operations Manager at an electric cooperative, active Firefighter
+- **Profession**: Electrical Engineer, Operations Manager at an electric cooperative, active Firefighter
 - **Domain expertise**: NEC electrical code, IEEE 1366 utility reliability indices, NFPA/NERIS fire incident reporting, outage management, service orders, ArcGIS/GIS
 - **Technical level**: Engineering background, learning software development. Comfortable with concepts but new to Python/FastAPI/API development
 - **Work style**: Prefers ambitious, comprehensive plans ("10X mindset") over minimum viable products. Wants to build real businesses, not side projects

@@ -31,7 +31,7 @@ app = FastAPI(
     description=(
         "**The Infrastructure API for the Trades.**\n\n"
         "NEC-compliant electrical calculations, utility reliability indices, "
-        "and fire protection engineering — built by a licensed electrical engineer.\n\n"
+        "and fire protection engineering — built by an electrical engineer.\n\n"
         "## API Modules\n\n"
         "- **Electrical** (`/v1/electrical/`) — Wire sizing, voltage drop, conduit fill, "
         "ampacity, breaker sizing, and more. All calculations reference NEC 2023.\n"

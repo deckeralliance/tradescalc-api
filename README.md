@@ -2,7 +2,7 @@
 
 **The Infrastructure API for the Trades.**
 
-NEC-compliant electrical calculations, utility reliability indices, and fire protection engineering — built by a licensed electrical engineer.
+NEC-compliant electrical calculations, utility reliability indices, and fire protection engineering — built by an electrical engineer.
 
 ## API Modules
 
