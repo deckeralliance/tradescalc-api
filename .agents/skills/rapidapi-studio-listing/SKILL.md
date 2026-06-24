@@ -209,3 +209,6 @@ listings. Each listing is a separate "API Project" in Studio.
 - **OpenAPI import via CI/CD resets the General tab** — always configure General tab AFTER importing endpoints, not before
 - When splitting into multiple listings, do imports first, then fill descriptions
 - Plan pricing may need manual verification after browser automation — always screenshot the final state
+- **Each RapidAPI listing generates its own X-RapidAPI-Proxy-Secret** — when splitting into multiple listings pointing to the same backend, the backend middleware must accept ALL secrets (store comma-separated in one env var)
+- **Base URL is configured in the Provider Dashboard**, not Studio Gateway tab: Provider Dashboard → API Specs → Settings → Base URL → Configure "default" pool
+- **Always verify APIs through RapidAPI playground after listing** — test the full subscriber flow, not just direct HTTP
