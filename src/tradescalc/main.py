@@ -85,8 +85,13 @@ async def validate_rapidapi_proxy(request: Request, call_next):
         proxy_secret = request.headers.get("X-RapidAPI-Proxy-Secret", "")
         api_key = request.headers.get("X-Api-Key", "")
 
-        # Accept either RapidAPI proxy secret OR direct API key
-        if proxy_secret != settings.rapidapi_proxy_secret and not api_key:
+        # Support multiple proxy secrets (comma-separated) for split listings
+        valid_secrets = [
+            s.strip() for s in settings.rapidapi_proxy_secret.split(",") if s.strip()
+        ]
+
+        # Accept either a matching RapidAPI proxy secret OR direct API key
+        if proxy_secret not in valid_secrets and not api_key:
             return JSONResponse(
                 status_code=403,
                 content={

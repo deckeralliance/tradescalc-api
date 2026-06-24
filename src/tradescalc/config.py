@@ -16,7 +16,7 @@ class Settings(BaseSettings):
     environment: str = Field(default="development", alias="TRADESCALC_ENV")
     debug: bool = False
 
-    # Security
+    # Security — comma-separated list to support multiple RapidAPI listings
     rapidapi_proxy_secret: str = Field(default="", alias="RAPIDAPI_PROXY_SECRET")
     api_key_salt: str = Field(default="tradescalc-dev-salt", alias="TRADESCALC_API_KEY_SALT")
 
