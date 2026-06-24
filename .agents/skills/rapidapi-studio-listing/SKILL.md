@@ -36,6 +36,22 @@ See `resources/` directory for UI reference screenshots:
 5. **Community** — Discussion/community settings
 6. **Monetize** — Pricing plans and quotas
 
+## Critical Order of Operations
+
+Based on failures and fixes during TradesCalc deployment, follow this exact order:
+
+1. Create API Project
+2. Import endpoints via CI/CD (this **resets General tab**!)
+3. Set Base URL in **Provider Dashboard** (NOT Studio Gateway tab)
+   - Provider Dashboard → API Specs → Settings → Base URL → Configure "default" pool
+4. Configure General tab (descriptions, category, website) — AFTER import
+5. Configure Monetization (price dialog + quota dialog separately)
+6. Upload logo
+7. Set visibility → PUBLIC
+8. Copy X-RapidAPI-Proxy-Secret from Gateway tab
+9. Add secret to backend env var (comma-separated if multiple listings)
+10. **Test through RapidAPI playground** — verify 200 OK with real data
+
 ## Step-by-Step Listing Process
 
 ### Step 1: Create API Project

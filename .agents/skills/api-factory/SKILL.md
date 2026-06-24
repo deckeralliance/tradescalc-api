@@ -211,18 +211,32 @@ One logo per API module using generate_image tool:
 Follow the `rapidapi-studio-listing` skill for detailed UI navigation.
 
 **Critical order of operations:**
-1. Create API Project (import from OpenAPI URL)
-2. Configure Gateway → set Base URL, copy proxy secret
-3. Import Definitions from OpenAPI spec (via CI/CD tab)
-4. THEN configure General tab (import resets it!)
-5. Upload logo
-6. Configure Monetization (price dialog + quota dialog separately)
+1. Create API Project
+2. Import endpoints via CI/CD (this resets General tab!)
+3. Set Base URL in **Provider Dashboard** (NOT Studio Gateway tab)
+   - Provider Dashboard → API Specs → Settings → Base URL → Configure "default" pool
+4. Configure General tab (descriptions, category, website) — AFTER import
+5. Configure Monetization (price dialog + quota dialog separately)
+6. Upload logo
 7. Set visibility → PUBLIC
+8. Copy X-RapidAPI-Proxy-Secret from Gateway tab
+9. Add secret to backend env var (comma-separated if multiple listings)
+10. **Test through RapidAPI playground** — verify 200 OK with real data
 
-### Add Proxy Secret to Render
-After getting the X-RapidAPI-Proxy-Secret from Gateway tab:
+### Multi-Listing Proxy Secret Pattern
+When you have multiple RapidAPI listings pointing to the same backend:
+1. Each listing generates its own unique X-RapidAPI-Proxy-Secret
+2. The backend middleware must accept ALL secrets, not just one
+3. Store them comma-separated in a single env var:
+   `RAPIDAPI_PROXY_SECRET=secret1,secret2,secret3`
+4. Middleware splits by comma and checks `if proxy_secret in valid_secrets`
+5. After adding each new listing, copy its proxy secret and append it to the
+   Render env var (comma-separated, no spaces)
+
+### Add Proxy Secrets to Render
+After getting X-RapidAPI-Proxy-Secret from each listing's Gateway tab:
 - Go to Render dashboard → service → Environment
-- Set RAPIDAPI_PROXY_SECRET = {copied value}
+- Set RAPIDAPI_PROXY_SECRET = all secrets comma-separated
 - Save (triggers redeploy)
 
 ### Pricing Strategy
@@ -233,10 +247,37 @@ After getting the X-RapidAPI-Proxy-Secret from Gateway tab:
 - Higher-budget buyers (enterprise, utilities) → higher prices
 - Consumer/hobbyist buyers → lower prices, higher volume play
 
-## Phase 7: Post-Launch
+## Phase 7: Custom Domain (5 min)
+
+### Register Domain
+- Use Cloudflare Registrar (~$10-12/yr for .dev)
+- Navigate to dash.cloudflare.com → Add domain → Register
+
+### Configure DNS on Cloudflare
+Add 2 CNAME records:
+
+| Type  | Name | Target                     | Proxy |
+|-------|------|----------------------------|-------|
+| CNAME | @    | {project}-api.onrender.com | ☁️ On |
+| CNAME | www  | {project}-api.onrender.com | ☁️ On |
+
+Cloudflare supports CNAME flattening at root — no A record needed.
+
+### Add Custom Domain on Render
+1. Go to Render dashboard → service → Settings
+2. Scroll to Custom Domains
+3. Add: {project}.dev
+4. Add: www.{project}.dev
+5. Render auto-verifies DNS and issues SSL certificate
+
+### Verify Domain
+- `https://{project}.dev/health` → 200 OK
+- `https://www.{project}.dev/health` → 200 OK
+- `https://{project}.dev/docs` → Swagger UI
+
+## Phase 8: Post-Launch
 
 ### Immediate
-- Register domain ({project}.dev) via Cloudflare (~$10-12/yr)
 - Deploy landing page (dark theme, premium feel, feature cards, pricing, code examples)
 - Git push landing page (docs/ directory)
 
