@@ -287,16 +287,89 @@ Cloudflare supports CNAME flattening at root — no A record needed.
 - `https://www.{project}.dev/health` → 200 OK
 - `https://{project}.dev/docs` → Swagger UI
 
-## Phase 8: Post-Launch
+## Phase 8: Marketing Blitz (10 min, automated)
+
+Run this immediately after deployment. Use subagents to generate all assets in parallel.
+
+### 8a. Code Examples (5 languages)
+Generate working code snippets from the OpenAPI spec for:
+- **cURL** — copy-paste ready
+- **Python** (requests) — most common on RapidAPI
+- **JavaScript** (fetch) — for web devs
+- **Go** (net/http) — for infra/backend devs
+- **Ruby** (net/http) — for Rails devs
+
+Template per language:
+```
+# Install: pip install requests
+import requests
+
+url = "https://{api-slug}.p.rapidapi.com/v1/{endpoint}"
+headers = {
+    "X-RapidAPI-Key": "YOUR_API_KEY",
+    "X-RapidAPI-Host": "{api-slug}.p.rapidapi.com",
+    "Content-Type": "application/json"
+}
+payload = {example_body}
+
+response = requests.post(url, json=payload, headers=headers)
+print(response.json())
+```
+
+Embed these in: landing page, README, dev.to article, RapidAPI listing description.
+
+### 8b. Dev.to Article
+Generate a technical tutorial article (~800-1200 words) with structure:
+1. **Hook**: "I built an API that does [X] so you don't have to"
+2. **Problem**: Why this calculation is hard / data is hard to find
+3. **Solution**: Show the API with code examples
+4. **Live demo**: Link to RapidAPI playground
+5. **Call to action**: Subscribe on RapidAPI
+
+Save as `marketing/dev-to-article.md` in the repo.
+
+### 8c. Social Media Copy
+Generate ready-to-post copy for:
+
+**LinkedIn** (3 posts, spaced 1 week apart):
+1. Launch announcement — "Just shipped [API Name]..."
+2. Technical deep-dive — "Here's how [calculation] works under the hood..."
+3. Use-case story — "If you're a [persona], you've probably spent hours on [task]..."
+
+**X/Twitter** (3 tweets):
+1. Launch — short, punchy, with link
+2. Code example — screenshot-worthy snippet
+3. Problem/solution hook
+
+Save as `marketing/social-media.md` in the repo.
+
+### 8d. README Enhancement
+Update README.md with:
+- Badges (build status, RapidAPI link, license)
+- Quick-start code example (Python)
+- Feature table with all endpoints
+- Pricing tier summary
+- Link to interactive docs
+
+### 8e. SEO Mini-Articles (optional, high-value)
+Generate 2-3 short articles targeting search terms developers use:
+- "How to calculate [X] with an API"
+- "[Industry] calculations API — free tier available"
+- "[Standard/Code] lookup API for developers"
+
+Save as `marketing/seo/` directory. Can be posted to dev.to, Medium, or personal blog.
+
+## Phase 9: Post-Launch
 
 ### Immediate
 - Deploy landing page (dark theme, premium feel, feature cards, pricing, code examples)
 - Git push landing page (docs/ directory)
+- Post dev.to article
+- Schedule social media posts (Week 1, 2, 3)
 
 ### Week 1
 - Monitor RapidAPI Analytics for usage patterns
-- Write dev.to article about the API
-- Post on relevant subreddits and LinkedIn
+- Post first LinkedIn + X/Twitter
 - Cross-check data against authoritative sources
 
 ### Ongoing
@@ -305,6 +378,7 @@ Cloudflare supports CNAME flattening at root — no A record needed.
 - Add more data tables and calculation types
 - Generate SDKs from /openapi.json (openapi-generator-cli)
 - Add Stripe direct billing on custom domain
+- Refresh social media posts monthly
 
 ## Reference: TradesCalc Metrics (Benchmark)
 - Time from start to live: ~90 minutes
